@@ -1,5 +1,5 @@
 <template>
-    <span class="whitespace-nowrap">
+    <span class="flex gap-1 whitespace-nowrap">
         <base-button
             v-for="direction in ['undo', 'redo']"
             :key="'history-button'+direction"
@@ -7,7 +7,7 @@
             :clickMethod="changeHistory"
             :clickMethodParameters="direction"
             :title="__(direction)"
-            :icon="['fas', direction+'-alt']"
+            :icon="direction"
         >
         </base-button>
     </span>

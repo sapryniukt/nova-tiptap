@@ -6,27 +6,21 @@
         :show-help-text="showHelpText"
     >
         <template #field>
-            <div style="position: relative; top: 0; left: 0">
+            <div class="rounded-md transition-all duration-300 hover:shadow-input" style="position: relative; top: 0; left: 0">
                 <div
-                    class="
-                        w-full overflow-break
-                        bg-gray-100 dark:bg-gray-700 rounded
-                    "
-                    style="z-index: 10; position: sticky; top: 0; left: 0"
+                    class="w-full overflow-break"
+                    style="z-index: 10; position: sticky; top: 1.5rem; left: 0"
                 >
 
-                    <div class="p-1">
+                    <div class="flex items-center border border-border rounded-t-md px-1 bg-background">
                         <div
                             v-for="button in buttons"
                             :key="'button-'+button"
-                            :class="{
-                                'inline-block': button != 'br'
-                            }"
+                            class="space-y-1 leading-0"
                         >
                             <template v-if="button == '|'">
                                 <button class="
-                                    w-[1px] h-6 relative top-2 mx-1
-                                    bg-gray-400
+                                    w-px h-10 relative top-0 mx-2 bg-border
                                 ">
 
                                 </button>
@@ -121,12 +115,9 @@
                                 <base-button
                                     :isActive="mode == 'html'"
                                     :clickMethod="switchMode"
-                                    :icon="['fas', 'file-code']"
                                     :title="__('edit html')"
-                                >
-
-                                </base-button>
-
+                                    icon="command-line-tools"
+                                />
                             </template>
 
                             <template v-else>
@@ -141,7 +132,7 @@
                     </div>
 
                     <div
-                        class="flex items-center rounded"
+                        class="flex items-center border border-border bg-background"
                         style="z-index: 10;"
                         v-if="tableIsActive"
                     >
@@ -156,10 +147,8 @@
                 <div
                     class="
                         nova-tiptap-editor
-                        form-input
-                        form-input-bordered w-full
-                        pt-2 pb-2
-                        mt-3
+                        w-full border border-border
+                        p-2 rounded-b-md
                     "
                     :style="cssProps"
                     v-show="mode == 'editor'"
@@ -551,6 +540,9 @@ export default {
 </script>
 
 <style lang="scss">
+.leading-0 {
+    line-height: 0;
+}
 .nova-tiptap-editor {
     padding-bottom: 20px;
     padding-top: 20px;

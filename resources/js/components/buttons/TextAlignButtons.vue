@@ -1,5 +1,5 @@
 <template>
-    <span class="whitespace-nowrap">
+    <span class="flex gap-1 whitespace-nowrap">
         <base-button
             v-for="alignment in alignments"
             :key="'alignment-button'+alignment"
@@ -8,7 +8,7 @@
             :clickMethod="setAlignment"
             :clickMethodParameters="alignment"
             :title="__('align '+alignment)"
-            :icon="['fas', 'align-'+iconName(alignment)]"
+            :icon="'text-'+iconName(alignment)"
         >
         </base-button>
     </span>

@@ -11,13 +11,6 @@
     "nova:install": "npm --prefix='./vendor/laravel/nova' ci"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^6.1.0",
-    "@fortawesome/fontawesome-pro": "^6.1.0",
-    "@fortawesome/fontawesome-svg-core": "^6.1.0",
-    "@fortawesome/free-solid-svg-icons": "^6.1.0",
-    "@fortawesome/pro-regular-svg-icons": "^6.1.0",
-    "@fortawesome/pro-solid-svg-icons": "^6.1.0",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@vue/compiler-sfc": "^3.2.33",
     "cross-env": "^7.0",
     "laravel-mix": "^6.0.20",
@@ -72,6 +65,7 @@
     "npm": "^7.17.0",
     "portal-vue": "^3.0",
     "pretty": "^2.0.0",
+    "tailwindcss": "^3.4.18",
     "vue": "^3.2.33",
     "vue-loader": "^17.0.0",
     "vue-template-compiler": "^2.6.14",

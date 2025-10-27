@@ -48,9 +48,7 @@
                                                 class="ml-4 cursor-pointer"
                                                 @click="removeSlide(slideIndex)"
                                             >
-                                                <font-awesome-icon :icon="['fas', 'trash-alt']">
-                                                </font-awesome-icon>
-                                                
+                                                <Icon type="trash" />
                                             </div>
                                         </div>
 
@@ -62,8 +60,7 @@
                                                 }"
                                                 @click="moveUp(slideIndex)"
                                             >
-                                                <font-awesome-icon :icon="['fas', 'angle-up']">
-                                                </font-awesome-icon>
+                                                <Icon type="angle-up" />
                                             </div>
 
                                             <div
@@ -73,8 +70,7 @@
                                                 }"
                                                 @click="moveDown(slideIndex)"
                                             >
-                                                <font-awesome-icon :icon="['fas', 'angle-down']">
-                                                </font-awesome-icon>
+                                                <Icon type="angle-down" />
                                             </div>
                                         </div>
                                     </div>
@@ -164,8 +160,7 @@
                                                     cursor-pointer ml-8 text-xl text-primary
                                                 "
                                             >
-                                                <font-awesome-icon :icon="['fas', 'times-circle']">
-                                                </font-awesome-icon>
+                                                <Icon type="times-circle" />
                                             </div>
 
                                             <div
@@ -445,14 +440,6 @@
 </template>
 
 <script>
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-
-import { faTimesCircle, faTrashAlt, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-library.add(faTimesCircle, faTrashAlt, faAngleDown, faAngleUp);
-
 import ContentBlockWrapper from './ContentBlockWrapper';
 import { nodeViewProps } from '@tiptap/vue-3';
 
@@ -460,7 +447,7 @@ export default {
     props: nodeViewProps,
 
     components: {
-        ContentBlockWrapper, FontAwesomeIcon
+        ContentBlockWrapper,
     },
 
     data() {

@@ -130,8 +130,7 @@
                             "
                             style="margin-left: 16px;"
                         >
-                            <font-awesome-icon :icon="['fas', 'trash-alt']">
-                            </font-awesome-icon>
+                            <Icon type="trash" />
                         </div>
                     </div>
 
@@ -278,7 +277,7 @@
                 :isDisabled="!linkCanBeUsed"
                 :clickMethod="showLinkMenu"
                 :title="!linkIsActive ? ttt('set link') : ttt('edit link')"
-                :icon="['fas', 'link']"
+                icon="link"
             >
             </base-button>
 
@@ -287,7 +286,7 @@
                 :isDisabled="!linkCanBeUsed"
                 :clickMethod="unsetLink"
                 :title="ttt('unset link')"
-                :icon="['fas', 'unlink']"
+                icon="link-slash"
             >
             </base-button>
         </span>
@@ -297,15 +296,10 @@
 <script>
 import buttonHovers from '../../mixins/buttonHovers';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import BaseButton from './BaseButton.vue';
 
 import translations from '../../mixins/translations';
 
-library.add(faTimesCircle);
 
 export default {
     mixins: [buttonHovers, translations],
@@ -338,7 +332,6 @@ export default {
     },
 
     components: {
-        FontAwesomeIcon,
         BaseButton,
     },
 
