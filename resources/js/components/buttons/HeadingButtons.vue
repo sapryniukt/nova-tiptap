@@ -1,5 +1,5 @@
 <template>
-  <span class="flex gap-1 whitespace-nowrap">
+  <span class="flex gap-0.5 whitespace-nowrap">
     <base-button
       v-for="level in headingLevels"
       :key="'heading-button' + level"

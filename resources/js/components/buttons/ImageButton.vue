@@ -1,176 +1,215 @@
 <template>
   <span style="z-index: 10">
-    <Modal :show="imageMenuIsActive" tabindex="-1">
-      <div class="px-8 py-8 bg-white">
-        <div v-if="!imageIsActive && withFileUpload">
-          <span
-            class="inline-block uppercase cursor-pointer font-bold text-sm border-b mr-4"
-            :class="{
-              'text-primary-500 border-primary-500': imageMode == 'file',
-              'text-gray-500 border-transparent': imageMode != 'file',
-            }"
-            @click="imageMode = 'file'"
-            v-text="ttt('file upload')"
-          >
-          </span>
-
-          <span
-            class="inline-block uppercase cursor-pointer font-bold text-sm border-b"
-            :class="{
-              'text-primary-500 border-primary-500': imageMode == 'url',
-              'text-gray-500 border-transparent': imageMode != 'url',
-            }"
-            @click="imageMode = 'url'"
-            v-text="ttt('external url')"
-          >
-          </span>
-        </div>
-
-        <div v-if="!imageIsActive" style="padding-top: 32px">
-          <div v-if="withFileUpload" v-show="imageMode == 'file'">
-            <div
-              class="flex items-center"
-              :class="{
-                'pointer-events-none opacity-50': uploading,
-              }"
-            >
-              <label
-                class="relative bg-primary-500 text-white rounded font-bold shadow py-1 px-4 cursor-pointer"
-              >
-                <input
-                  ref="fileInput"
-                  type="file"
-                  @change="changeFile($event.target.files)"
-                  accept="image/*"
-                  class="w-full h-full absolute top-0 left-0"
-                  style="opacity: 0"
-                />
-                <span v-text="ttt('select file')"></span>
-              </label>
-
-              <div class="h-16 flex items-center" style="margin-left: 16px">
-                <span v-if="!preview" v-text="ttt('no file selected')"> </span>
-                <img
-                  v-if="preview"
-                  :src="preview"
-                  class="w-auto"
-                  style="height: 64px"
-                />
-              </div>
-
-              <div
-                v-if="file"
-                @click="removeFile()"
-                class="cursor-pointer text-xl text-primary"
-                style="margin-left: 16px"
-              >
-                <Icon type="trash" />
-              </div>
-            </div>
-
-            <div
-              class="w-full h-2"
-              :class="{
-                'bg-gray-200': uploading,
-              }"
-              style="margin-top: 16px"
-            >
-              <div
-                class="bg-primary-400 h-full"
-                :style="{
-                  width: uploadProgress + '%',
+    <Dialog
+      data-slot="dialog"
+      :open="imageMenuIsActive"
+      :default-open="imageMenuIsActive"
+      @update:open="
+        (open) => {
+          if (!open) hideImageMenu();
+        }
+      "
+      @showing="showImageMenu"
+      @close-via-escape="hideImageMenu"
+      data-testid="confirm-action-modal"
+      tabindex="-1"
+      role="dialog"
+    >
+      <DialogContent
+        class="overflow-hidden bg-white p-0 py-4"
+        @close="hideImageMenu"
+      >
+        <ScrollArea
+          class="modal-scrollarea rounded-2xl [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-4"
+        >
+          <div class="px-6 py-1.5 bg-white">
+            <div v-if="!imageIsActive && withFileUpload">
+              <span
+                class="inline-block cursor-pointer [&::first-letter]:uppercase capitalize font-bold text-base border-b-2 mr-4"
+                :class="{
+                  'text-primary border-primary': imageMode == 'file',
+                  'text-foreground border-transparent': imageMode != 'file',
                 }"
-              ></div>
+                @click="imageMode = 'file'"
+                v-text="ttt('file upload')"
+              >
+              </span>
+
+              <span
+                class="inline-block cursor-pointer [&::first-letter]:uppercase capitalize font-bold text-base border-b-2"
+                :class="{
+                  'text-primary border-primary': imageMode == 'url',
+                  'text-foreground border-transparent': imageMode != 'url',
+                }"
+                @click="imageMode = 'url'"
+                v-text="ttt('external url')"
+              >
+              </span>
+            </div>
+
+            <div v-if="!imageIsActive" style="padding-top: 32px">
+              <div v-if="withFileUpload" v-show="imageMode == 'file'">
+                <div
+                  class="flex items-center"
+                  :class="{
+                    'pointer-events-none opacity-50': uploading,
+                  }"
+                >
+                  <label>
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      @change="changeFile($event.target.files)"
+                      accept="image/*"
+                      class="h-10 absolute"
+                      style="opacity: 0"
+                    />
+                    <DdOutlineButton size="lg" type="button">
+                      <span
+                        class="[&::first-letter]:uppercase capitalize"
+                        v-text="ttt('select file')"
+                      ></span>
+                    </DdOutlineButton>
+                  </label>
+
+                  <div class="h-16 flex items-center" style="margin-left: 16px">
+                    <span v-if="!preview" v-text="ttt('no file selected')">
+                    </span>
+                    <img
+                      v-if="preview"
+                      :src="preview"
+                      class="w-auto"
+                      style="height: 64px"
+                    />
+                  </div>
+
+                  <div
+                    v-if="file"
+                    @click="removeFile()"
+                    class="cursor-pointer text-xl text-primary"
+                    style="margin-left: 16px"
+                  >
+                    <Icon type="trash" />
+                  </div>
+                </div>
+
+                <div
+                  class="w-full h-2"
+                  :class="{
+                    'bg-gray-200': uploading,
+                  }"
+                  style="margin-top: 16px"
+                >
+                  <div
+                    class="bg-primary-400 h-full"
+                    :style="{
+                      width: uploadProgress + '%',
+                    }"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="" v-show="imageMode == 'url'">
+                <div class="flex flex-col">
+                  <label class="text-sm mb-1 ml-1" v-text="ttt('url')"></label>
+                  <Input
+                    class="h-10 bg-accent-foreground text-lg"
+                    type="text"
+                    v-model="url"
+                    placeholder="https://"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style="padding-top: 32px">
+              <div class="flex flex-col">
+                <label
+                  class="text-sm mb-1 ml-1"
+                  v-text="ttt('custom css classes')"
+                ></label>
+                <Input
+                  class="h-10 bg-accent-foreground text-lg"
+                  type="text"
+                  v-model="extraClasses"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 mt-3">
+                <div class="flex flex-col">
+                  <label
+                    class="text-sm mb-1 ml-1"
+                    v-text="ttt('title')"
+                  ></label>
+                  <Input
+                    class="h-10 bg-accent-foreground text-lg"
+                    type="text"
+                    v-model="title"
+                  />
+                </div>
+
+                <div class="flex flex-col">
+                  <label
+                    class="text-sm mb-1 ml-1"
+                    v-text="ttt('alt text')"
+                  ></label>
+                  <Input
+                    class="h-10 bg-accent-foreground text-lg"
+                    type="text"
+                    v-model="alt"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="" v-show="imageMode == 'url'">
-            <div class="flex flex-col">
-              <label class="text-sm mb-1 ml-1" v-text="ttt('url')"></label>
-              <input
-                class="form-input form-input-bordered px-2 py-1 w-full text-sm text-90 leading-none"
-                type="text"
-                v-model="url"
-                placeholder="https://"
-              />
+          <DialogFooter
+            class="sticky bottom-0 top-auto bg-white/90 px-6 pb-2 pt-4 shadow-footer backdrop-blur-sm"
+          >
+            <div class="ml-auto flex items-center gap-4">
+              <DdTertiaryButton
+                component="button"
+                type="button"
+                dusk="cancel-action-button"
+                class="ml-auto h-10 6 [&::first-letter]:uppercase capitalize"
+                @click="hideImageMenu"
+              >
+                {{ ttt("cancel") }}
+              </DdTertiaryButton>
+
+              <DdButton
+                type="button"
+                ref="runButton"
+                dusk="confirm-action-button"
+                class="h-10 px-6 [&::first-letter]:uppercase capitalize"
+                :disabled="
+                  !imageIsActive &&
+                  ((imageMode == 'url' && !url) ||
+                    (imageMode == 'file' && !file))
+                "
+                @click="
+                  imageIsActive
+                    ? updateImage($event)
+                    : imageMode == 'url'
+                    ? addImageFromUrl($event)
+                    : uploadAndAddImage($event)
+                "
+                autofocus
+              >
+                {{
+                  imageIsActive
+                    ? ttt("update image")
+                    : imageMode == "url"
+                    ? ttt("add image")
+                    : ttt("upload and add image")
+                }}
+              </DdButton>
             </div>
-          </div>
-        </div>
-
-        <div style="padding-top: 32px">
-          <div class="flex flex-col">
-            <label
-              class="text-sm mb-1 ml-1"
-              v-text="ttt('custom css classes')"
-            ></label>
-            <input
-              class="form-input form-input-bordered px-2 py-1 w-full text-sm text-90 leading-none"
-              type="text"
-              v-model="extraClasses"
-            />
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 mt-3">
-            <div class="flex flex-col">
-              <label class="text-sm mb-1 ml-1" v-text="ttt('title')"></label>
-              <input
-                class="form-input form-input-bordered px-2 py-1 w-full text-sm text-90 leading-none"
-                type="text"
-                v-model="title"
-              />
-            </div>
-
-            <div class="flex flex-col mt-3">
-              <label class="text-sm mb-1 ml-1" v-text="ttt('alt text')"></label>
-              <input
-                class="form-input form-input-bordered px-2 py-1 w-full text-sm text-90 leading-none"
-                type="text"
-                v-model="alt"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-gray-200 px-8 py-3">
-        <div class="flex items-center justify-end">
-          <button
-            type="button"
-            class="font-bold py-1 cursor-pointer mr-4"
-            @click="hideImageMenu"
-            v-text="ttt('cancel')"
-          ></button>
-
-          <button
-            type="button"
-            class="relative bg-primary-500 text-white rounded font-bold shadow py-1 px-4 cursor-pointer"
-            :style="
-              (imageMode == 'url' && !url) || (imageMode == 'file' && !file)
-                ? 'opacity: 0.5'
-                : ''
-            "
-            :disabled="
-              !imageIsActive &&
-              ((imageMode == 'url' && !url) || (imageMode == 'file' && !file))
-            "
-            @click="
-              imageIsActive
-                ? updateImage($event)
-                : imageMode == 'url'
-                ? addImageFromUrl($event)
-                : uploadAndAddImage($event)
-            "
-            v-text="
-              imageIsActive
-                ? ttt('update image')
-                : imageMode == 'url'
-                ? ttt('add image')
-                : ttt('upload and add image')
-            "
-          ></button>
-        </div>
-      </div>
-    </Modal>
+          </DialogFooter>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+    <!--  -->
 
     <span class="whitespace-nowrap">
       <base-button
@@ -189,7 +228,6 @@
 import BaseButton from "./BaseButton.vue";
 
 import translations from "../../mixins/translations";
-
 
 export default {
   mixins: [translations],

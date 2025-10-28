@@ -9,10 +9,10 @@
             <div class="rounded-md transition-all duration-300 hover:shadow-input" style="position: relative; top: 0; left: 0">
                 <div
                     class="w-full overflow-break"
-                    style="z-index: 10; position: sticky; top: 1.5rem; left: 0"
+                    style="z-index: 10; position: sticky; top: 1.75rem; left: 0"
                 >
 
-                    <div class="flex items-center border border-border rounded-t-md px-1 bg-background">
+                    <div class="flex items-center flex-wrap gap-0.5 border border-border rounded-t-md px-1 bg-background">
                         <div
                             v-for="button in buttons"
                             :key="'button-'+button"
@@ -20,7 +20,7 @@
                         >
                             <template v-if="button == '|'">
                                 <button class="
-                                    w-px h-10 relative top-0 mx-2 bg-border
+                                    w-px h-10 relative top-0 mx-1.5 bg-border
                                 ">
 
                                 </button>
